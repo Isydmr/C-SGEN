@@ -13,7 +13,6 @@ Theano            1.0.3
 numpy             1.16.4
 scipy             1.3.0
 torch             1.1.0
-timeit            1.1.0
 sklearn           0.0
 deepchem          2.1.1
 torch-scatter     1.2.0

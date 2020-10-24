@@ -1,12 +1,12 @@
 import numpy as np
-import deepchem as dc
 import os
 import torch
 from utils import preprocess_adj
 from rdkit import Chem
 import pickle
 from numpy import flip
-
+import deepchem as dc
+import pandas as pd
 
 def create_adjacency(mol):
     adjacency = Chem.GetAdjacencyMatrix(mol)
@@ -27,14 +27,32 @@ def save_feature(dir, Features, Normed_adj, Interactions, smiles, edge, full_fea
     with open(dir_input + 'full_feature', 'wb') as a:
         pickle.dump(full_feature, a)
 
-
 # Only for debug!
 np.random.seed(123)
-
+"""
+data = pd.read_csv("in-trials.csv") 
+smiles_repr = data['smiles']
+mol_objects = []
+for smile in smiles_repr:
+    molecules = []
+    molecules.append(Chem.MolFromSmiles(smile))
+    featurizer = dc.feat.graph_features.ConvMolFeaturizer()
+    mol_object = featurizer.featurize(mols=molecules)
+    mol_objects.append(mol_object)
+molecules = []
+molecules.append(Chem.MolFromSmiles(smile))
+featurizer = dc.feat.graph_features.ConvMolFeaturizer()
+mol_object = featurizer.featurize(mols=molecules)
+"""
 # Load Delaney dataset
 delaney_tasks, delaney_datasets, transformers = dc.molnet.load_sampl(featurizer='GraphConv', split='random')
 train_dataset, valid_dataset, test_dataset = delaney_datasets
-
+for x, y, w,z in train_dataset.itersamples():
+    print("x: ", x)
+    print("y:", y)
+    print("w:", w)
+    print("Z: ", z)
+    print("------------------")
 maxNumAtoms = 16
 
 def fix_input(feature_array, iAdjTmp):
